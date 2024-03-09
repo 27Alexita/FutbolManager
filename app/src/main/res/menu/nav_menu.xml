@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn = "navigation_view">
+
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_equipo"
+            android:icon="@drawable/equipo"
+            android:title="Equipo"/>
+
+        <item
+            android:id="@+id/nav_convocados"
+            android:icon="@drawable/convocados"
+            android:title="Convocados"/>
+
+        <item
+            android:id="@+id/nav_fecha"
+            android:icon="@drawable/fecha"
+            android:title="Seleccionar fecha"/>
+
+        <item
+            android:id="@+id/nav_guardar"
+            android:icon="@drawable/guardar"
+            android:title="Guardar"/>
+
+        <item
+            android:id="@+id/nav_historico"
+            android:icon="@drawable/historico"
+            android:title="Histórico"/>
+
+        <item
+            android:id="@+id/nav_sobremi"
+            android:icon="@drawable/info"
+            android:title="Sobre mí"/>
+
+        <item
+            android:id="@+id/nav_cerrar"
+            android:icon="@drawable/cerrarsesion"
+            android:title="Cerrar sesión"/>
+    </group>
+
+</menu>

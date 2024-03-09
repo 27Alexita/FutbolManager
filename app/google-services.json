@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1026901548059",
+    "project_id": "futbolmanager-f3b97",
+    "storage_bucket": "futbolmanager-f3b97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1026901548059:android:2199fb331b88f0076decbe",
+        "android_client_info": {
+          "package_name": "tarea5.futbolManager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1026901548059-10nq9q4b99p717kc7s3bn0pgnegubs0p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tarea5.futbolManager",
+            "certificate_hash": "c8dfd1b8822f16bffef32c2637816e722dbec0df"
+          }
+        },
+        {
+          "client_id": "1026901548059-254auu9j0qpjf2l80gptj09i4b8np725.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDylanRfLUx20BmHdUxN9fDo9vuEkdsEPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1026901548059-254auu9j0qpjf2l80gptj09i4b8np725.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
