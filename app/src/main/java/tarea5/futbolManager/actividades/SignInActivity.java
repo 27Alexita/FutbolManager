@@ -1,27 +1,25 @@
-package tarea5.futbolManager;
+package tarea5.futbolManager.actividades;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import tarea5.futbolManager.R;
 import tarea5.futbolManager.databinding.ActivitySignInBinding;
 
 public class SignInActivity extends AppCompatActivity {
@@ -117,14 +115,27 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void signOut() {
-        // Cerrar sesión de Google
-        mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
-            // Cerrar sesión de Firebase
-            mAuth.signOut();
-            // Actualizar UI después de cerrar sesión
-            updateUI(null);
-        });
+        // Crear un AlertDialog para confirmar el cierre de sesión
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.sign_out)) // Usa un string resource para el título
+                .setMessage(getString(R.string.sign_out_confirmation)) // Usa un string resource para el mensaje
+                .setPositiveButton(getString(R.string.sign_out), (dialog, which) -> {
+                    // Si el usuario confirma, proceder a cerrar sesión
+                    mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+                        // Cerrar sesión de Firebase
+                        mAuth.signOut();
+                        // Actualizar UI después de cerrar sesión
+                        updateUI(null);
+                    });
+                })
+                .setNegativeButton(getString(R.string.cancelar), (dialog, which) -> {
+                    // Si el usuario selecciona 'Cancelar', descartar el diálogo y no hacer nada
+                    dialog.dismiss();
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert) // Poner un ícono de alerta (opcional)
+                .show(); // Mostrar el diálogo
     }
+
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {

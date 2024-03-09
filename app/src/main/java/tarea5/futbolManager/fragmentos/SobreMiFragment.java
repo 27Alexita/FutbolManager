@@ -1,4 +1,4 @@
-package tarea5.futbolManager;
+package tarea5.futbolManager.fragmentos;
 
 import android.os.Bundle;
 
@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import tarea5.futbolManager.actividades.MainActivity;
+import tarea5.futbolManager.R;
 import tarea5.futbolManager.databinding.FragmentSobreMiBinding;
 
 

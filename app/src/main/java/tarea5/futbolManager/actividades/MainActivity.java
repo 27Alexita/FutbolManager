@@ -1,4 +1,4 @@
-package tarea5.futbolManager;
+package tarea5.futbolManager.actividades;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -11,13 +11,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
 
+import tarea5.futbolManager.R;
 import tarea5.futbolManager.databinding.ActivityMainBinding;
+import tarea5.futbolManager.fragmentos.ConvocadosFragment;
+import tarea5.futbolManager.fragmentos.EquipoFragment;
+import tarea5.futbolManager.fragmentos.FechaFragment;
+import tarea5.futbolManager.fragmentos.GuardarFragment;
+import tarea5.futbolManager.fragmentos.HistoricoFragment;
+import tarea5.futbolManager.fragmentos.SobreMiFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.nav_equipo:
-                navigateToFragment(new EquipoFragment(), "Equipo");
+                navigateToFragment(new EquipoFragment(), "Jugador");
                 break;
             case R.id.nav_convocados:
                 navigateToFragment(new ConvocadosFragment(), "Convocados");
@@ -127,12 +130,3 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 }
-
-//    private void cerrarSesion() {
-//        // Solo redirige al usuario a SignInActivity
-//        Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-//        // Puedes pasar un extra si necesitas indicar a SignInActivity que muestre el botón de cerrar sesión.
-//        intent.putExtra("cerrarSesion", true);
-//        startActivity(intent);
-//        finish();
-//    }

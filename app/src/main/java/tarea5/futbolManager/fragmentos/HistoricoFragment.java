@@ -1,4 +1,4 @@
-package tarea5.futbolManager;
+package tarea5.futbolManager.fragmentos;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import tarea5.futbolManager.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link GuardarFragment#newInstance} factory method to
+ * Use the {@link HistoricoFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class GuardarFragment extends Fragment {
+public class HistoricoFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class GuardarFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public GuardarFragment() {
+    public HistoricoFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class GuardarFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment GuardarFragment.
+     * @return A new instance of fragment HistoricoFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static GuardarFragment newInstance(String param1, String param2) {
-        GuardarFragment fragment = new GuardarFragment();
+    public static HistoricoFragment newInstance(String param1, String param2) {
+        HistoricoFragment fragment = new HistoricoFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class GuardarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_guardar, container, false);
+        return inflater.inflate(R.layout.fragment_historico, container, false);
     }
 }
