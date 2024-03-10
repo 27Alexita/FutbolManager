@@ -62,6 +62,12 @@ public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.EquipoView
         });
     }
 
+    // Método para actualizar la lista de jugadores y notificar al adaptador
+    public void setEquipos(List<Jugador> nuevosJugadores) {
+        this.jugadores = nuevosJugadores;
+        notifyDataSetChanged(); // Notificar al adaptador para refrescar la lista
+    }
+
     @Override
     public int getItemCount() {
         return jugadores.size();

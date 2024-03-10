@@ -21,7 +21,8 @@ import tarea5.futbolManager.modelos.Jugador;
 public class EquipoFragment extends Fragment {
 
     private FragmentEquipoBinding binding;
-
+    private EquipoAdapter equipoAdapter;
+    public static List<Jugador> listaTotalJugadores = crearListaDeJugadores();
     public EquipoFragment() {
 
     }
@@ -36,20 +37,26 @@ public class EquipoFragment extends Fragment {
         // Configura el RecyclerView
         binding.recyclerViewEquipo.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        List<Jugador> jugadores = crearListaDeJugadores();
-        EquipoAdapter equipoAdapter = new EquipoAdapter(jugadores, getContext());
+        listaTotalJugadores = crearListaDeJugadores(); // Asegúrate de que esto se llame correctamente
+        equipoAdapter = new EquipoAdapter(listaTotalJugadores, getContext()); // Inicializa aquí
         binding.recyclerViewEquipo.setAdapter(equipoAdapter);
 
         equipoAdapter.setOnContactClickListener(position -> {
-            Jugador jugadorSeleccionado = jugadores.get(position);
-            jugadorSeleccionado.setConvocado(!jugadorSeleccionado.isConvocado());
-            equipoAdapter.notifyItemChanged(position);
+            cambiarEstadoConvocadoYActualizar(position);
         });
 
         return view;
     }
 
-    private List<Jugador> crearListaDeJugadores(){
+    private void cambiarEstadoConvocadoYActualizar(int position) {
+        Jugador jugadorSeleccionado = listaTotalJugadores.get(position);
+        jugadorSeleccionado.setConvocado(!jugadorSeleccionado.isConvocado());
+        equipoAdapter.notifyItemChanged(position);
+
+        ConvocadosFragment.notificarCambioConvocados();
+    }
+
+    private static List<Jugador> crearListaDeJugadores(){
         List<Jugador> jugadores = new ArrayList<>();
         jugadores.add(new Jugador("Lionel Messi", "Delantero", R.drawable.messi));
         jugadores.add(new Jugador("Sergio Agüero", "Delantero", R.drawable.aguero));

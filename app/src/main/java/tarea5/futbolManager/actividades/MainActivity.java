@@ -2,6 +2,7 @@ package tarea5.futbolManager.actividades;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.nav_equipo:
-                navigateToFragment(new EquipoFragment(), "Jugador");
+                mostrarDialogoEquipoSeleccion();
+                //navigateToFragment(new EquipoFragment(), "Jugador");
                 break;
             case R.id.nav_convocados:
                 navigateToFragment(new ConvocadosFragment(), "Convocados");
@@ -72,6 +74,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // El botón de hamburguesa tiene el ID android.R.id.home
+        if (item.getItemId() == android.R.id.home) {
+            // Abrir o cerrar el drawer según su estado actual
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
     private void initializeUI() {
         // Inflo la vista
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -97,12 +115,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white)); // Reemplaza R.color.your_icon_color con el color que prefieras para el icono
     }
 
-
     private void navigateToFragment(Fragment fragment, String title) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
         }
+    }
+
+    private void mostrarDialogoEquipoSeleccion() {
+        new AlertDialog.Builder(this)
+                .setTitle("Atención")
+                .setMessage("Debes seleccionar los jugadores convocados para el partido.")
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    // Navegar al EquipoFragment después de la confirmación
+                    navigateToFragment(new EquipoFragment(), "Equipo");
+                })
+                .setNegativeButton(R.string.cancelar, null) // No hace nada, solo cierra el diálogo
+                .show();
     }
 
     private void cerrarSesion() {
