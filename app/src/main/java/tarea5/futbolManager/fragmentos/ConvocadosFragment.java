@@ -27,7 +27,7 @@ public class ConvocadosFragment extends Fragment {
     private FragmentConvocadosBinding binding;
     private static ConvocadosFragment instance = null;
     private EquipoAdapter equipoAdapter;
-    private List<Jugador> listaTotalJugadores = new ArrayList<>();
+    private List<Jugador> listaTotalJugadores;
     private List<Jugador> jugadoresConvocados = new ArrayList<>();
 
     public ConvocadosFragment() {

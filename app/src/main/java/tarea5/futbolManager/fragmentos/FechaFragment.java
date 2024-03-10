@@ -1,66 +1,60 @@
 package tarea5.futbolManager.fragmentos;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import tarea5.futbolManager.R;
+import java.util.Calendar;
+import java.util.Locale;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FechaFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import tarea5.futbolManager.R;
+import tarea5.futbolManager.databinding.FragmentFechaBinding;
+
+
 public class FechaFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private FragmentFechaBinding binding;
+    private static final String ARG_FECHA = "fecha";
     public FechaFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FechaFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FechaFragment newInstance(String param1, String param2) {
+    }
+    public static FechaFragment newInstance(String fecha) {
         FechaFragment fragment = new FechaFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_FECHA, fecha);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentFechaBinding.inflate(inflater, container, false);
+
+        // Recupera la fecha pasada como argumento y la muestra en el TextView
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String fecha = getArguments().getString(ARG_FECHA);
+            binding.textViewFecha.setText(fecha);
         }
+
+        // Actualizar el título de la ActionBar
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null && activity.getSupportActionBar() != null) {
+            activity.getSupportActionBar().setTitle("Seleccionar Fecha");
+        }
+
+        return binding.getRoot();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fecha, container, false);
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // Importante para evitar fugas de memoria
     }
+
 }

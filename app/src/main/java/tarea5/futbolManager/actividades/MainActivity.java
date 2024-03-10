@@ -8,11 +8,15 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 import tarea5.futbolManager.R;
 import tarea5.futbolManager.databinding.ActivityMainBinding;
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navigateToFragment(new ConvocadosFragment(), "Convocados");
                 break;
             case R.id.nav_fecha:
-                navigateToFragment(new FechaFragment(), "Fecha");
+                mostrarDatePickerDialog();
                 break;
             case R.id.nav_guardar:
                 navigateToFragment(new GuardarFragment(), "Guardar");
@@ -132,6 +136,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 })
                 .setNegativeButton(R.string.cancelar, null) // No hace nada, solo cierra el diálogo
                 .show();
+    }
+
+    private void mostrarDatePickerDialog() {
+        Calendar calendario = Calendar.getInstance();
+        int anio = calendario.get(Calendar.YEAR);
+        int mes = calendario.get(Calendar.MONTH);
+        int dia = calendario.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this, // Contexto de la actividad
+                (view, anioSeleccionado, mesDelAnio, diaDelMes) -> {
+                    // Corrige el orden de los parámetros y el formateo de la fecha
+                    String fechaSeleccionada = String.format(Locale.getDefault(), "%02d/%02d/%04d", diaDelMes, mesDelAnio + 1, anioSeleccionado);
+                    mostrarFragmentoFechaConFecha(fechaSeleccionada);
+                },
+                anio,
+                mes,
+                dia
+        );
+        datePickerDialog.show();
+    }
+    private void mostrarFragmentoFechaConFecha(String fecha) {
+        FechaFragment fechaFragment = FechaFragment.newInstance(fecha);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fechaFragment)
+                .commit();
     }
 
     private void cerrarSesion() {
