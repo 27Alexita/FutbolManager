@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,37 +16,34 @@ import java.util.Locale;
 
 import tarea5.futbolManager.R;
 import tarea5.futbolManager.databinding.FragmentFechaBinding;
+import tarea5.futbolManager.modelos.PartidosViewModel;
 
 
 public class FechaFragment extends Fragment {
 
     private FragmentFechaBinding binding;
-    private static final String ARG_FECHA = "fecha";
+    private PartidosViewModel viewModel;
     public FechaFragment() {
 
-    }
-    public static FechaFragment newInstance(String fecha) {
-        FechaFragment fragment = new FechaFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_FECHA, fecha);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFechaBinding.inflate(inflater, container, false);
 
-        // Recupera la fecha pasada como argumento y la muestra en el TextView
-        if (getArguments() != null) {
-            String fecha = getArguments().getString(ARG_FECHA);
-            binding.textViewFecha.setText(fecha);
-        }
+        // Obtiene una instancia del PartidosViewModel
+        viewModel = new ViewModelProvider(requireActivity()).get(PartidosViewModel.class);
+
+        // Observa la fecha seleccionada en el ViewModel y actualiza el TextView cuando cambie
+        viewModel.getFechaSeleccionada().observe(getViewLifecycleOwner(), fecha -> {
+            // Actualiza el TextView con la fecha
+            binding.textViewFecha.setText(fecha != null ? fecha : "No hay fecha seleccionada");
+        });
 
         // Actualizar el título de la ActionBar
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null && activity.getSupportActionBar() != null) {
-            activity.getSupportActionBar().setTitle("Seleccionar Fecha");
+            activity.getSupportActionBar().setTitle("Fecha");
         }
 
         return binding.getRoot();

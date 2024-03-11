@@ -42,23 +42,12 @@ public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.EquipoView
         holder.imageViewJugador.setImageResource(jugador.getImageId());
 
         // Configurar la imagen de la estrella según si el jugador está seleccionado o no
-        if (jugador.isConvocado()) {
-            holder.imageViewConvocado.setImageResource(R.drawable.icono_convocado);
-        } else {
-            holder.imageViewConvocado.setImageResource(R.drawable.icono_no_convocado);
-        }
+        holder.imageViewConvocado.setImageResource(jugador.isConvocado() ? R.drawable.icono_convocado : R.drawable.icono_no_convocado);
 
-        // Establecer el listener para el clic en la imagen de la estrella
-        holder.imageViewConvocado.setOnClickListener(view -> {
-            // Cambiar el estado de selección del jugador
-            boolean nuevoEstado = !jugador.isConvocado();
-            jugador.setConvocado(nuevoEstado);
-
-            // Cambiar el recurso de la imagen de la estrella según el nuevo estado
-            holder.imageViewConvocado.setImageResource(nuevoEstado ? R.drawable.icono_convocado : R.drawable.icono_no_convocado);
-
-            // Notificar al adaptador que los datos han cambiado
-            notifyItemChanged(position);
+        holder.itemView.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.onContactClick(position);
+            }
         });
     }
 
@@ -94,13 +83,6 @@ public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.EquipoView
             imageViewJugador = itemView.findViewById(R.id.imageViewJugador);
             imageViewConvocado = itemView.findViewById(R.id.imageViewConvocado);
             cardViewEquipo = itemView.findViewById(R.id.cardViewEquipo);
-
-            imageViewConvocado.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    listener.onContactClick(position);
-                }
-            });
         }
     }
 }

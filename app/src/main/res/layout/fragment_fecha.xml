@@ -36,4 +36,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.546" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_viewFecha"
+        android:layout_width="205dp"
+        android:layout_height="197dp"
+        android:layout_centerInParent="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.922"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.959"
+        app:lottie_autoPlay="false"
+        app:lottie_loop="false" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

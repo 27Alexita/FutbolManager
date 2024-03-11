@@ -3,6 +3,7 @@ package tarea5.futbolManager.fragmentos;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,50 +18,51 @@ import tarea5.futbolManager.R;
 import tarea5.futbolManager.adaptadores.EquipoAdapter;
 import tarea5.futbolManager.databinding.FragmentEquipoBinding;
 import tarea5.futbolManager.modelos.Jugador;
+import tarea5.futbolManager.modelos.PartidosViewModel;
 
 public class EquipoFragment extends Fragment {
 
     private FragmentEquipoBinding binding;
     private EquipoAdapter equipoAdapter;
-    public static List<Jugador> listaTotalJugadores = crearListaDeJugadores();
+    private PartidosViewModel viewModel;
     public EquipoFragment() {
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Reemplaza "FragmentEquipoBinding" con el nombre correspondiente generado a partir del nombre de tu layout.
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentEquipoBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
+        viewModel = new ViewModelProvider(requireActivity()).get(PartidosViewModel.class);
 
         // Configura el RecyclerView
         binding.recyclerViewEquipo.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        listaTotalJugadores = crearListaDeJugadores(); // Asegúrate de que esto se llame correctamente
-        equipoAdapter = new EquipoAdapter(listaTotalJugadores, getContext()); // Inicializa aquí
-        binding.recyclerViewEquipo.setAdapter(equipoAdapter);
-
-        equipoAdapter.setOnContactClickListener(position -> {
-            cambiarEstadoConvocadoYActualizar(position);
+        // Observa la lista de todos los jugadores desde el ViewModel
+        viewModel.getListaTotalJugadores().observe(getViewLifecycleOwner(), jugadores -> {
+            if (equipoAdapter == null) {
+                equipoAdapter = new EquipoAdapter(jugadores, getContext());
+                equipoAdapter.setOnContactClickListener(position -> {
+                    // Aquí usamos 'jugadores.get(position)' directamente, asegurándonos de que se refiere a la lista actual
+                    Jugador jugadorSeleccionado = jugadores.get(position);
+                    viewModel.cambiarEstadoConvocadoYActualizar(jugadorSeleccionado);
+                    // Es importante notificar al adaptador sobre los cambios para refrescar la UI
+                    equipoAdapter.notifyItemChanged(position);
+                });
+                binding.recyclerViewEquipo.setAdapter(equipoAdapter);
+            } else {
+                equipoAdapter.setEquipos(jugadores);
+                equipoAdapter.notifyDataSetChanged();
+            }
         });
 
-        return view;
+        return binding.getRoot();
     }
 
-    private void cambiarEstadoConvocadoYActualizar(int position) {
-        Jugador jugadorSeleccionado = listaTotalJugadores.get(position);
-        jugadorSeleccionado.setConvocado(!jugadorSeleccionado.isConvocado());
-        equipoAdapter.notifyItemChanged(position);
-
-        ConvocadosFragment.notificarCambioConvocados();
-    }
-
-    private static List<Jugador> crearListaDeJugadores(){
+    public static List<Jugador> crearListaDeJugadores(){
         List<Jugador> jugadores = new ArrayList<>();
         jugadores.add(new Jugador("Lionel Messi", "Delantero", R.drawable.messi));
         jugadores.add(new Jugador("Sergio Agüero", "Delantero", R.drawable.aguero));
-        jugadores.add(new Jugador("Neymar Jr.", "Delantero", R.drawable.neymar));
+        jugadores.add(new Jugador("Neymar Jr", "Delantero", R.drawable.neymar));
         jugadores.add(new Jugador("Luka Modric", "Centrocampista", R.drawable.modric));
         jugadores.add(new Jugador("Sergio Busquets", "Centrocampista", R.drawable.busquets));
         jugadores.add(new Jugador("Gerard Piqué", "Defensa", R.drawable.pique));
@@ -70,7 +72,7 @@ public class EquipoFragment extends Fragment {
         jugadores.add(new Jugador("Casemiro", "Centrocampista", R.drawable.casemiro));
         jugadores.add(new Jugador("Eden Hazard", "Delantero", R.drawable.hazard));
         jugadores.add(new Jugador("Marco Asensio", "Delantero", R.drawable.asensio));
-        jugadores.add(new Jugador("Vinicius Jr.", "Delantero", R.drawable.vinicius));
+        jugadores.add(new Jugador("Vinicius Jr", "Delantero", R.drawable.vinicius));
         jugadores.add(new Jugador("Ferland Mendy", "Defensa", R.drawable.mendy));
         jugadores.add(new Jugador("Raphael Varane", "Defensa", R.drawable.varane));
         jugadores.add(new Jugador("Lucas Vázquez", "Defensa", R.drawable.vazquez));
