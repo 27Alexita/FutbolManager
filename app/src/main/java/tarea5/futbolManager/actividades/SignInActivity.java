@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -58,8 +59,12 @@ public class SignInActivity extends AppCompatActivity {
         // Solo el botón SignIn de Google es visible inicialmente
         binding.signInButton.setVisibility(View.VISIBLE);
         binding.imageViewIniciarSesion.setVisibility(View.VISIBLE);
+        binding.animationViewInicio.setVisibility(View.VISIBLE);
         binding.signOutButton.setVisibility(View.GONE);
         binding.volverButton.setVisibility(View.GONE);
+
+        binding.animationViewInicio.setAnimation("flecha.json");
+        binding.animationViewInicio.playAnimation();
     }
 
 
@@ -137,17 +142,20 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
+
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             // El usuario está autenticado, mostrar botón de cerrar sesión
             binding.signInButton.setVisibility(View.GONE);
             binding.imageViewIniciarSesion.setVisibility(View.GONE);
+            binding.animationViewInicio.setVisibility(View.GONE);
             binding.signOutButton.setVisibility(View.VISIBLE);
             binding.volverButton.setVisibility(View.VISIBLE);
         } else {
             // Usuario no está autenticado, mostrar solo el botón de inicio de sesión
             binding.signInButton.setVisibility(View.VISIBLE);
             binding.imageViewIniciarSesion.setVisibility(View.VISIBLE);
+            binding.animationViewInicio.setVisibility(View.VISIBLE);
             binding.signOutButton.setVisibility(View.GONE);
             binding.volverButton.setVisibility(View.GONE);
         }

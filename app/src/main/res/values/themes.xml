@@ -1,8 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.FutbolManager" parent="Theme.Material3.DayNight">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.FutbolManager" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Personaliza tu tema aquí. -->
+        <item name="colorPrimary">#1B5E20</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">#378818</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
     </style>
 
     <style name="Theme.FutbolManager" parent="Base.Theme.FutbolManager" />

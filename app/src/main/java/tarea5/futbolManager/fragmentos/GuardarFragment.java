@@ -36,31 +36,11 @@ public class GuardarFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = FragmentGuardarBinding.inflate(inflater, container, false);
 
-        viewModel.getMostrarAnimacionExito().observe(getViewLifecycleOwner(), mostrar -> {
-            if (mostrar != null && mostrar) {
-                mostrarAnimacionExito();
-                viewModel.resetMostrarAnimacionExito(); // Importante para evitar que la animación se muestre más de una vez.
-            }
-        });
+        binding.animationViewGuardar.setAnimation("jugador.json");
+        binding.animationViewGuardar.playAnimation();
 
         return binding.getRoot();
     }
-
-    public void mostrarAnimacionExito() {
-        LottieAnimationView animationView = binding.animationViewGuardar;
-        animationView.setAnimationFromUrl("https://lottie.host/c58432fc-0747-40b2-a689-45e624775f1f/kUljYf9sx7.json");
-        animationView.playAnimation();
-
-        // Opcional: Esconde la animación después de que termine
-        animationView.addAnimatorListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                animationView.setVisibility(View.GONE);
-            }
-        });
-    }
-
 
     @Override
     public void onDestroyView() {

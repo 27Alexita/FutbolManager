@@ -25,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/imageViewJugador"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginEnd="16dp"
                 android:scaleType="centerCrop"
@@ -34,8 +34,8 @@
 
             <ImageView
                 android:id="@+id/imageViewConvocado"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_launcher_background" />
 
@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/secular_one"
-                    android:text="Nombre de contacto"
+                    android:text="Nombre jugador"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -61,8 +61,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/secular_one"
-                    android:text="correo@ejemplo.com"
-                    android:textColor="@color/black"
+                    android:text="posicion"
+                    android:textColor="#1B5E20"
                     android:textSize="16sp" />
 
             </LinearLayout>

@@ -48,6 +48,12 @@ public class EquipoAdapter extends RecyclerView.Adapter<EquipoAdapter.EquipoView
             if (listener != null) {
                 listener.onContactClick(position);
             }
+
+            // Realizar animación en el ícono de la estrella
+            holder.imageViewConvocado.animate()
+                    .rotationBy(360f)
+                    .setDuration(500)
+                    .start();
         });
     }
 

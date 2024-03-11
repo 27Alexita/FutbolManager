@@ -4,14 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/alineacion"
     tools:context=".fragmentos.GuardarFragment">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_viewGuardar"
-        android:layout_width="205dp"
-        android:layout_height="197dp"
-        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="389dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-2dp"
+        android:layout_marginTop="301dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="-94dp"
         app:lottie_autoPlay="false"
-        app:lottie_loop="false" />
+        app:lottie_loop="true" />
 
-    </RelativeLayout>
+</RelativeLayout>

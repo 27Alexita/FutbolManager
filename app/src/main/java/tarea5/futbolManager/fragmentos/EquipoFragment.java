@@ -16,6 +16,7 @@ import java.util.List;
 
 import tarea5.futbolManager.R;
 import tarea5.futbolManager.adaptadores.EquipoAdapter;
+import tarea5.futbolManager.adaptadores.FadeInItemDecorator;
 import tarea5.futbolManager.databinding.FragmentEquipoBinding;
 import tarea5.futbolManager.modelos.Jugador;
 import tarea5.futbolManager.modelos.PartidosViewModel;
@@ -36,6 +37,9 @@ public class EquipoFragment extends Fragment {
 
         // Configura el RecyclerView
         binding.recyclerViewEquipo.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Añadir aquí la decoración al RecyclerView
+        binding.recyclerViewEquipo.addItemDecoration(new FadeInItemDecorator());
 
         // Observa la lista de todos los jugadores desde el ViewModel
         viewModel.getListaTotalJugadores().observe(getViewLifecycleOwner(), jugadores -> {

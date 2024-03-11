@@ -21,6 +21,7 @@ import java.util.List;
 
 import tarea5.futbolManager.R;
 import tarea5.futbolManager.adaptadores.EquipoAdapter;
+import tarea5.futbolManager.adaptadores.FadeInItemDecorator;
 import tarea5.futbolManager.databinding.FragmentConvocadosBinding;
 import tarea5.futbolManager.modelos.Jugador;
 import tarea5.futbolManager.modelos.PartidosViewModel;
@@ -42,6 +43,9 @@ public class ConvocadosFragment extends Fragment {
 
         // Configura el RecyclerView
         binding.recyclerViewConvocados.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Añadir aquí la decoración al RecyclerView
+        binding.recyclerViewConvocados.addItemDecoration(new FadeInItemDecorator());
 
         viewModel.getJugadoresConvocados().observe(getViewLifecycleOwner(), jugadoresConvocados -> {
             // Directamente actualiza el adaptador sin mostrar ningún diálogo

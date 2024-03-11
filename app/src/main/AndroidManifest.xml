@@ -24,8 +24,7 @@
         </activity>
         <activity
             android:name=".actividades.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Material3.DayNight">
+            android:exported="true">
         </activity>
 
         <meta-data

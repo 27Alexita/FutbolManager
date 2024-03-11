@@ -1,5 +1,7 @@
 package tarea5.futbolManager.fragmentos;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -53,7 +55,8 @@ public class SobreMiFragment extends DialogFragment {
         // Configurar el diálogo
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(view)
-                .setTitle("Sobre mí").setMessage("Desarrollado por: Sandra Sanabrias Viller \nProgramación Multimedia y Dispositivos Móviles \nCurso 2023-2024 \nIES Juan Bosco \nAlcázar de San Juan")
+                .setTitle("Sobre mí")
+                .setMessage("Desarrollado por: Sandra Sanabrias Viller \nProgramación Multimedia y Dispositivos Móviles \nCurso 2023-2024 \nIES Juan Bosco \nAlcázar de San Juan")
                 .setPositiveButton("Cerrar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -69,6 +72,14 @@ public class SobreMiFragment extends DialogFragment {
                     }
                 });
 
-        return builder.create();
+        // Crear el AlertDialog
+        AlertDialog dialog = builder.create();
+
+        // Cambiar el fondo del diálogo
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#BFF281"))); // Cambia "#BFF281" por tu color
+        }
+
+        return dialog;
     }
 }

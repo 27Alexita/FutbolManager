@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -155,15 +157,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void mostrarDialogoEquipoSeleccion() {
-        new AlertDialog.Builder(this)
+        // Crea el AlertDialog y guarda la referencia en una variable
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Atención")
                 .setMessage("Debes seleccionar los jugadores convocados para el partido.")
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                .setPositiveButton(android.R.string.ok, (dialogInterface, which) -> {
                     // Navegar al EquipoFragment después de la confirmación
                     navigateToFragment(new EquipoFragment(), "Equipo");
                 })
                 .setNegativeButton(R.string.cancelar, null) // No hace nada, solo cierra el diálogo
-                .show();
+                .create(); // Usa create() para construir el AlertDialog sin mostrarlo
+
+        // Ahora puedes modificar la ventana del diálogo
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#BFF281"))); // Reemplaza #TU_COLOR con el color deseado
+        }
+
+        // Finalmente, muestra el diálogo
+        dialog.show();
     }
 
     private void verificarJugadoresConvocadosAntesDeNavegar() {
@@ -178,11 +189,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void mostrarDialogoSinJugadoresConvocados() {
-        new AlertDialog.Builder(this)
+        // Crea el AlertDialog y guarda la referencia en una variable
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Sin jugadores convocados")
                 .setMessage("No hay jugadores seleccionados para el próximo partido. \nDebes configurar la plantilla. \nAl pulsar el botón aceptar, te dirigirá al Equipo directamente.")
                 .setPositiveButton("Aceptar", (dialogInterface, i) -> navigateToFragment(new EquipoFragment(), "Equipo"))
-                .show();
+                .create(); // Usa create() para construir el AlertDialog sin mostrarlo aún
+
+        // Ahora puedes modificar la ventana del diálogo
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#BFF281"))); // Reemplaza #BFF281 con el color deseado
+        }
+
+        // Finalmente, muestra el diálogo
+        dialog.show();
     }
 
     private void mostrarDatePickerDialog() {
@@ -206,22 +226,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void guardarJugadoresConvocados() {
         String fechaSeleccionada = viewModel.getFechaSeleccionada().getValue();
         if (fechaSeleccionada == null || fechaSeleccionada.isEmpty()) {
-            // Crear y mostrar un diálogo alertando que no hay fecha seleccionada
-            new AlertDialog.Builder(this)
+            // Crea el AlertDialog y guarda la referencia en una variable
+            AlertDialog dialog = new AlertDialog.Builder(this)
                     .setTitle("Fecha Requerida")
                     .setMessage("Por favor, selecciona una fecha antes de guardar.")
-                    .setPositiveButton("Seleccionar Fecha", (dialog, which) -> {
+                    .setPositiveButton("Seleccionar Fecha", (dialogInterface, which) -> {
                         // Llamada directa al método para mostrar el DatePickerDialog
                         mostrarDatePickerDialog();
                     })
-                    .setNegativeButton(R.string.cancelar, null)
-                    .show();
+                    .setNegativeButton(R.string.cancelar, null) // No hace nada, solo cierra el diálogo
+                    .create(); // Usa create() para construir el AlertDialog sin mostrarlo
+
+            // Modificar la ventana del diálogo para cambiar el color de fondo
+            if (dialog.getWindow() != null) {
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#BFF281"))); // Usa el color deseado
+            }
+
+            // Muestra el diálogo
+            dialog.show();
         } else {
             List<Jugador> jugadoresConvocados = viewModel.getJugadoresConvocados().getValue();
             if (jugadoresConvocados != null && !jugadoresConvocados.isEmpty()) {
                 guardarEnFirebase(fechaSeleccionada, jugadoresConvocados);
+                navigateToFragment(new GuardarFragment(), "Guardar");
             } else {
-                Toast.makeText(this, "No hay jugadores convocados para guardar.", Toast.LENGTH_LONG).show();
+                // Crea el AlertDialog para el caso de no haber jugadores convocados
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("Sin Jugadores Convocados")
+                        .setMessage("No hay jugadores convocados para guardar. \nPor favor, configura la plantilla.")
+                        .setPositiveButton("Configurar", (dialogInterface, which) -> {
+                            // Llamada directa al método para mostrar el EquipoFragment
+                            navigateToFragment(new EquipoFragment(), "Equipo");
+                        })
+                        .setNegativeButton(R.string.cancelar, null) // No hace nada, solo cierra el diálogo
+                        .create(); // Usa create() para construir el AlertDialog sin mostrarlo
+
+                // Modifica la ventana del diálogo para cambiar el color de fondo
+                if (dialog.getWindow() != null) {
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#BFF281"))); // Usa el color deseado
+                }
+
+                // Muestra el diálogo
+                dialog.show();
             }
         }
     }
@@ -247,21 +293,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .addOnSuccessListener(aVoid -> Toast.makeText(MainActivity.this, "Jugadores guardados con éxito para la fecha " + fecha, Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Toast.makeText(MainActivity.this, "Error al guardar jugadores: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
-
-    private void mostrarAnimacionDeExito() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment instanceof GuardarFragment) {
-            GuardarFragment guardarFragment = (GuardarFragment) fragment;
-            if (guardarFragment.isAdded()) {
-                guardarFragment.mostrarAnimacionExito();
-            }
-        } else {
-            // Maneja el caso en que el fragmento no sea un GuardarFragment.
-            Log.d("MainActivity", "El fragmento actual no es un GuardarFragment.");
-        }
-    }
-
-
 
 
     private void cerrarSesion() {

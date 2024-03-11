@@ -40,6 +40,10 @@ public class FechaFragment extends Fragment {
             binding.textViewFecha.setText(fecha != null ? fecha : "No hay fecha seleccionada");
         });
 
+        binding.animationViewFecha.setAnimation("balon.json");
+        binding.animationViewFecha.playAnimation();
+
+
         // Actualizar el título de la ActionBar
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null && activity.getSupportActionBar() != null) {
@@ -48,6 +52,9 @@ public class FechaFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+
+
 
     @Override
     public void onDestroyView() {
