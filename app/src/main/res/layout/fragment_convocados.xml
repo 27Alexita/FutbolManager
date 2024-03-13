@@ -24,8 +24,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewConvocados"
-        android:layout_width="358dp"
-        android:layout_height="410dp"
+        android:layout_width="357dp"
+        android:layout_height="439dp"
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnBorrarConvocados"
         app:layout_constraintEnd_toEndOf="parent"

@@ -21,7 +21,7 @@
         <item
             android:id="@+id/nav_fecha"
             android:icon="@drawable/fecha"
-            android:title="Seleccionar fecha"/>
+            android:title="Fecha"/>
 
         <item
             android:id="@+id/nav_guardar"
@@ -30,7 +30,7 @@
 
         <item
             android:id="@+id/nav_historico"
-            android:icon="@drawable/historico"
+            android:icon="@drawable/fragmentohistorico"
             android:title="Histórico"/>
 
         <item

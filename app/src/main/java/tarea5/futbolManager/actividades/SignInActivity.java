@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -23,136 +22,153 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import tarea5.futbolManager.R;
 import tarea5.futbolManager.databinding.ActivitySignInBinding;
 
+/**
+ * Actividad para el inicio de sesión con Google
+ */
 public class SignInActivity extends AppCompatActivity {
 
-    private static final String TAG = "GoogleActivity";
-    private static final int RC_SIGN_IN = 1;
-    private ActivitySignInBinding binding;
-    private FirebaseAuth mAuth;
+    // Declaración de variables
+    private static final String TAG = "GoogleActivity"; // Etiqueta para el Log
+    private static final int RC_SIGN_IN = 1; // Código de solicitud para el inicio de sesión con Google
+    private ActivitySignInBinding binding; // Binding para la vista
+    private FirebaseAuth mAuth; // Instancia de FirebaseAuth
+    private GoogleSignInClient mGoogleSignInClient; // Cliente de inicio de sesión con Google
 
-
-    private GoogleSignInClient mGoogleSignInClient;
-
+    /**
+     * Método onCreate para inicializar la actividad
+     * @param savedInstanceState Instancia guardada
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Inflo el layout con ViewBinding
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Inicializo Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        // Inicializar la instancia de FirebaseAuth
+        initializeFirebaseAuth();
 
-        // Configuro el botón de inicio de sesión con Google
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("1026901548059-254auu9j0qpjf2l80gptj09i4b8np725.apps.googleusercontent.com")
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // Configurar el botón de inicio de sesión con Google
+        configureGoogleSignInButton();
 
-        // Establezco el listener del botón de inicio de sesión
-        binding.signInButton.setOnClickListener(v -> signIn());
-        binding.signOutButton.setOnClickListener(v -> signOut());
-        binding.volverButton.setOnClickListener(v -> goToMainActivity());
+        // Configurar los listeners de los botones
+        configureButtonClickListeners();
 
-        // Solo el botón SignIn de Google es visible inicialmente
-        binding.signInButton.setVisibility(View.VISIBLE);
-        binding.imageViewIniciarSesion.setVisibility(View.VISIBLE);
-        binding.animationViewInicio.setVisibility(View.VISIBLE);
-        binding.signOutButton.setVisibility(View.GONE);
-        binding.volverButton.setVisibility(View.GONE);
+        // Establecer la visibilidad inicial de los botones
+        setInitialButtonVisibility();
 
+        // Iniciar la animación de la flecha
         binding.animationViewInicio.setAnimation("flecha.json");
         binding.animationViewInicio.playAnimation();
     }
 
+    /**
+     * Inicializa la instancia de FirebaseAuth
+     */
+    private void initializeFirebaseAuth() {
+        mAuth = FirebaseAuth.getInstance();
+    }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Verificar si el usuario ya ha iniciado sesión y actualizar la interfaz de usuario en consecuencia
+    /**
+     * Configura el botón de inicio de sesión con Google
+     */
+    private void configureGoogleSignInButton() {
+        // Configurar las opciones de inicio de sesión con Google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                // Reemplaza con el ID de cliente de tu proyecto
+                .requestIdToken("1026901548059-254auu9j0qpjf2l80gptj09i4b8np725.apps.googleusercontent.com")
+                // Solicitar el correo electrónico del usuario
+                .requestEmail()
+                // Construir las opciones de inicio de sesión
+                .build();
+        // Crear el cliente de inicio de sesión con Google
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+
+    /**
+     * Configura los listeners de los botones
+     */
+    private void configureButtonClickListeners() {
+        // Configurar el listener del botón de inicio de sesión
+        binding.signInButton.setOnClickListener(v -> signIn());
+        // Configurar el listener del botón de cierre de sesión
+        binding.signOutButton.setOnClickListener(v -> showSignOutConfirmationDialog());
+        // Configurar el listener del botón de volver
+        binding.volverButton.setOnClickListener(v -> goToMainActivity());
+    }
+
+    /**
+     * Establece la visibilidad inicial de los botones
+     */
+    private void setInitialButtonVisibility() {
+        // Obtener el usuario actual
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        // Actualizar la interfaz de usuario
         updateUI(currentUser);
     }
 
+    /**
+     * Método onStart para actualizar la interfaz de usuario
+     */
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
-                firebaseAuthWithGoogle(account.getIdToken());
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
-                updateUI(null);
-            }
-        }
+    public void onStart() {
+        // Llama al método onStart de la superclase
+        super.onStart();
+        // Obtener el usuario actual
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        // Actualiza la interfaz de usuario
+        updateUI(currentUser);
     }
 
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
-                Log.d(TAG, "signInWithCredential:success");
-                FirebaseUser user = mAuth.getCurrentUser();
-
-                // En lugar de llamar a updateUI(user), maneja la redirección aquí
-                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                Log.w(TAG, "signInWithCredential:failure", task.getException());
-                updateUI(null);
-            }
-        });
-    }
-
+    /**
+     * Método para iniciar el inicio de sesión con Google
+     */
     private void signIn() {
+        // Obtener el intent de inicio de sesión con Google
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        // Iniciar la actividad para el resultado
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void signOut() {
-        // Crear un AlertDialog para confirmar el cierre de sesión
+    /**
+     * Muestra un diálogo de confirmación para cerrar la sesión
+     */
+    private void showSignOutConfirmationDialog() {
+        // Crear un diálogo de alerta
         new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.sign_out)) // Usa un string resource para el título
-                .setMessage(getString(R.string.sign_out_confirmation)) // Usa un string resource para el mensaje
-                .setPositiveButton(getString(R.string.sign_out), (dialog, which) -> {
-                    // Si el usuario confirma, proceder a cerrar sesión
-                    mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
-                        // Cerrar sesión de Firebase
-                        mAuth.signOut();
-                        // Actualizar UI después de cerrar sesión
-                        updateUI(null);
-                    });
-                })
-                .setNegativeButton(getString(R.string.cancelar), (dialog, which) -> {
-                    // Si el usuario selecciona 'Cancelar', descartar el diálogo y no hacer nada
-                    dialog.dismiss();
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert) // Poner un ícono de alerta (opcional)
-                .show(); // Mostrar el diálogo
+                .setTitle(getString(R.string.sign_out))
+                .setMessage(getString(R.string.sign_out_confirmation))
+                .setPositiveButton(getString(R.string.sign_out), (dialog, which) -> signOut())
+                .setNegativeButton(getString(R.string.cancelar), (dialog, which) -> dialog.dismiss())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
+    /**
+     * Cierra la sesión del usuario
+     */
+    private void signOut() {
+        // Cerrar la sesión con Google
+        mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+            // Cerrar la sesión con Firebase
+            mAuth.signOut();
+            // Actualizar la interfaz de usuario
+            updateUI(null);
+        });
+    }
 
-
+    /**
+     * Actualiza la interfaz de usuario
+     * @param user Usuario actual
+     */
     private void updateUI(FirebaseUser user) {
+        // Actualizar la visibilidad de los botones
         if (user != null) {
-            // El usuario está autenticado, mostrar botón de cerrar sesión
             binding.signInButton.setVisibility(View.GONE);
             binding.imageViewIniciarSesion.setVisibility(View.GONE);
             binding.animationViewInicio.setVisibility(View.GONE);
             binding.signOutButton.setVisibility(View.VISIBLE);
             binding.volverButton.setVisibility(View.VISIBLE);
         } else {
-            // Usuario no está autenticado, mostrar solo el botón de inicio de sesión
             binding.signInButton.setVisibility(View.VISIBLE);
             binding.imageViewIniciarSesion.setVisibility(View.VISIBLE);
             binding.animationViewInicio.setVisibility(View.VISIBLE);
@@ -161,9 +177,65 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Navega a la actividad principal
+     */
     private void goToMainActivity() {
+        // Crear un intent para la actividad principal
         Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+        // Iniciar la actividad
         startActivity(intent);
+        // Finalizar esta actividad
         finish();
+    }
+
+    /**
+     * Método para manejar el resultado del inicio de sesión con Google
+     * @param requestCode Código de solicitud
+     * @param resultCode Código de resultado
+     * @param data Datos
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Llama al método onActivityResult de la superclase
+        super.onActivityResult(requestCode, resultCode, data);
+        // Comprueba si el código de solicitud es el mismo que el código de inicio de sesión con Google
+        if (requestCode == RC_SIGN_IN) {
+            // Crear una tarea para obtener la cuenta de Google
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            // Manejar el resultado de la tarea
+            try {
+                // Obtener la cuenta de Google
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                // Iniciar sesión con Firebase
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                Log.w(TAG, "Google sign in failed", e);
+                updateUI(null);
+            }
+        }
+    }
+
+    /**
+     * Inicia sesión con Firebase usando la credencial de Google
+     * @param idToken Token de ID
+     */
+    private void firebaseAuthWithGoogle(String idToken) {
+        // Crear una credencial de autenticación con Google
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        // Iniciar sesión con la credencial
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
+            // Manejar el resultado de la tarea
+            if (task.isSuccessful()) {
+                // Inicio de sesión exitoso
+                FirebaseUser user = mAuth.getCurrentUser();
+                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                // Inicio de sesión fallido
+                updateUI(null);
+            }
+        });
     }
 }

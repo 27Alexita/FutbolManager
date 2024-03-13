@@ -23,13 +23,13 @@
 
     <Button
         android:id="@+id/signOutButton"
-        android:layout_width="228dp"
+        android:layout_width="172dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:backgroundTint="#FFC107"
+        android:backgroundTint="#FFE207"
         android:fontFamily="@font/secular_one"
         android:text="CERRAR SESIÓN"
-        android:textColor="#2196F3"
+        android:textColor="#000000"
         android:textSize="24sp"
         android:textStyle="bold"
         app:cornerRadius="10dp"
@@ -38,17 +38,17 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.788" />
+        app:layout_constraintVertical_bias="0.819" />
 
     <Button
         android:id="@+id/volverButton"
         android:layout_width="172dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:backgroundTint="#2196F3"
+        android:backgroundTint="#000000"
         android:fontFamily="@font/secular_one"
         android:text="VOLVER"
-        android:textColor="#FFC107"
+        android:textColor="#FFE207"
         android:textSize="24sp"
         android:textStyle="bold"
         app:cornerRadius="10dp"
@@ -57,7 +57,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.882" />
+        app:layout_constraintVertical_bias="0.889" />
 
     <ImageView
         android:id="@+id/imageViewIniciarSesion"
